@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
+from datetime import datetime
 
 class UserBase(BaseModel):
     clubname: str
@@ -9,8 +10,8 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     pass
 
-class User(UserBase):
-    id: int
+class UserOut(UserBase):
+    id: Optional[int]
 
     class Config:
         orm_mode = True
@@ -24,9 +25,9 @@ class GameHistoryBase(BaseModel):
 class GameHistoryCreate(GameHistoryBase):
     pass
 
-class GameHistory(GameHistoryBase):
-    id: int
-    game_timestamp: str
+class GameHistoryOut(GameHistoryBase):
+    id: Optional[int]
+    game_timestamp: Optional[datetime]
 
     class Config:
         orm_mode = True

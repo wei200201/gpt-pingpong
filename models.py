@@ -12,6 +12,7 @@ class User(Base):
     username = Column(String, unique=True, nullable=False)
     initial_scores = Column(Integer, default=1500)
 
+
 class GameHistory(Base):
     __tablename__ = 'game_history'
     id = Column(Integer, primary_key=True)

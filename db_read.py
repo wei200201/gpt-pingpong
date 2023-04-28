@@ -3,28 +3,29 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from database import get_db
 from models import Base, User, GameHistory, ScoreHistory
-from schemas import UserCreate, User, GameHistory, ScoreHistoryOut
+from schemas import UserOut, GameHistoryOut, ScoreHistoryOut
 
 router = APIRouter()
 
-@router.get("/users/", response_model=List[User])
+@router.get("/users/", response_model=List[UserOut])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = db.query(User).offset(skip).limit(limit).all()
     return users
 
-@router.get("/users/{id}", response_model=User)
+@router.get("/users/{id}", response_model=UserOut)
 def read_user(id: int, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
-@router.get("/games/", response_model=List[GameHistory])
+@router.get("/games/", response_model=List[GameHistoryOut])
 def read_games(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     games = db.query(GameHistory).offset(skip).limit(limit).all()
+
     return games
 
-@router.get("/games/{id}", response_model=GameHistory)
+@router.get("/games/{id}", response_model=GameHistoryOut)
 def read_user(id: int, db: Session = Depends(get_db)):
     game = db.query(GameHistory).filter(GameHistory.id == id).first()
     if not game:

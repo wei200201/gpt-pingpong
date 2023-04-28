@@ -2,26 +2,48 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from database import get_db
 from models import Base, User, GameHistory, ScoreHistory
-from schemas import UserCreate, User, GameHistory, GameHistoryCreate
+from schemas import UserCreate, UserOut, GameHistoryOut, GameHistoryCreate, ScoreHistoryCreate, ScoreHistoryOut
+import uuid
+
+def generate_unique_integer():
+    return uuid.uuid4().int & (1<<32)-1
 
 router = APIRouter()
 
-@router.post("/users/", response_model=User)
+@router.post("/users/", response_model=UserOut)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
+    print(type(user))
+    print(user.dict())
+    new_user=user.dict()
+    new_user['id']=generate_unique_integer()
+    print(new_user)
+
+
     db_user = User(**user.dict())
+    print(db_user)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
 
-@router.post("/game_history/", response_model=GameHistory)
+@router.post("/game_history/", response_model=GameHistoryOut)
 def create_game_history(game_history: GameHistoryCreate, db: Session = Depends(get_db)):
     db_game_history = GameHistory(**game_history.dict())
     db.add(db_game_history)
     db.commit()
     db.refresh(db_game_history)
+
+    print(type(db_game_history))
+    db_game_history.game_timestamp = str(db_game_history.game_timestamp)  # Convert datetime to string
     return db_game_history
 
+@router.post("/score_history/", response_model=ScoreHistoryOut)
+def create_score_history(score_history: ScoreHistoryCreate, db: Session = Depends(get_db)):
+    db_score_history = ScoreHistoryOut(**score_history.dict())
+    db.add(db_score_history)
+    db.commit()
+    db.refresh(db_score_history)
+    return db_score_history
 """
 
 @router.put("/items/{item_id}", response_model=Item)

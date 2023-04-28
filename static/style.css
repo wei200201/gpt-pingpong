@@ -1,0 +1,36 @@
+nav {
+    background-color: #333;
+    color: white;
+    padding: 1em;
+}
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+}
+nav ul li {
+    display: inline-block;
+    margin-right: 1em;
+}
+nav ul li:last-child {
+    margin-right: 0;
+}
+nav a {
+    color: white;
+    text-decoration: none;
+}
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1em;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+table th, table td {
+    padding: 0.5em;
+    border: 1px solid black;
+}
+
