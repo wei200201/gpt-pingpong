@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Game History</title>
+</head>
+<body>
+    <h1>Add Game History</h1>
+    <form action="/add_game_history" method="post">
+        <label for="player1_id">Player 1 ID:</label>
+        <input type="number" id="player1_id" name="player1_id" required><br><br>
+        <label for="player2_id">Player 2 ID:</label>
+        <input type="number" id="player2_id" name="player2_id" required><br><br>
+        <label for="winner_id">Winner ID:</label>
+        <input type="number" id="winner_id" name="winner_id" required><br><br>
+        <label for="loser_id">Loser ID:</label>
+        <input type="number" id="loser_id" name="loser_id" required><br><br>
+        <button type="submit">Submit</button>
+    </form>
+    <a href="/game_history">Back to Game History List</a>
+</body>
+</html>

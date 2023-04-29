@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Score History</title>
+</head>
+<body>
+    <h1>Score History</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>User ID</th>
+            <th>Old Score</th>
+            <th>New Score</th>
+            <th>Game ID</th>
+            <th>Change Timestamp</th>
+        </tr>
+        {% for score in score_history %}
+        <tr>
+            <td>{{ score.id }}</td>
+            <td>{{ score.user_id }}</td>
+            <td>{{ score.old_score }}</td>
+            <td>{{ score.new_score }}</td>
+            <td>{{ score.game_id }}</td>
+            <td>{{ score.change_timestamp }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/">Back to Home</a>
+</body>
+</html>

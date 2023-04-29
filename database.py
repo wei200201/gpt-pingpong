@@ -4,17 +4,6 @@ from models import Base, User, GameHistory, ScoreHistory
 from sqlalchemy.pool import QueuePool
 import configparser
 
-def get_db():
-    db = Session()
-    try:
-        yield db
-        db.commit()
-    except:
-        db.rollback()
-        raise
-    finally:
-        db.close()
-
 config = configparser.ConfigParser()
 config.read('config.ini')
 
@@ -41,6 +30,7 @@ Session = scoped_session(sessionmaker(bind=engine))
     finally:
         db.close()
 """
+
 def get_db():
     db = Session()
     try:
@@ -56,3 +46,16 @@ def create_db():
 
 if __name__ == "__main__":
     create_db()
+
+
+"""from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
+
+engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base = declarative_base()"""

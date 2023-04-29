@@ -1,11 +1,15 @@
 from fastapi import FastAPI, Body
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from db_read import router as read_router
-from db_write import router as write_router
+from db_read_user import user_router
+from db_read_game import game_router
+from db_write import write_router
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-app.include_router(read_router)
+app.include_router(user_router)
+app.include_router(game_router)
 app.include_router(write_router)
 
 

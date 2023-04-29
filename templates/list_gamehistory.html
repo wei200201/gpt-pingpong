@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game History</title>
+</head>
+<body>
+    <h1>Game History</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Timestamp</th>
+            <th>Player 1</th>
+            <th>Player 2</th>
+            <th>Winner</th>
+            <th>Loser</th>
+        </tr>
+        {% for game in game_history %}
+        <tr>
+            <td>{{ game.id }}</td>
+            <td>{{ game.game_timestamp }}</td>
+            <td>{{ game.player1_id }}</td>
+            <td>{{ game.player2_id }}</td>
+            <td>{{ game.winner_id }}</td>
+            <td>{{ game.loser_id }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/load_game">Add Game Results</a>
+</body>
+</html>
