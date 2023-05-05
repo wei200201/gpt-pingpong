@@ -73,21 +73,35 @@ def create_game_history(game_history: GameHistoryCreate, db: Session = Depends(g
     db_game_history.game_timestamp = str(db_game_history.game_timestamp)  # Convert datetime to string
     return db_game_history
 @write_router.post("/add_game_history", response_model=GameHistoryOut)
-def add_game_history(
-    player1_id: int = Form(...),
-    player2_id: int = Form(...),
-    winner_id: int = Form(...),
-    loser_id: int = Form(...),
-    db: Session = Depends(get_db)
-):
-    game_history = GameHistory(player1_id=player1_id, player2_id=player2_id, winner_id=winner_id, loser_id=loser_id)
-    db.add(game_history)
-    db.commit()
-    db.refresh(game_history)
+def add_game_history(player1_id: int = Form(...), player2_id: int = Form(...), winner_id: int = Form(...), loser_id: int = Form(...), db: Session = Depends(get_db) ):
 
-    print(game_history)
-    #game_history.game_timestamp = str(game_history.game_timestamp)  # Convert datetime to string
-    return game_history
+    try:
+        game_history = GameHistory(player1_id=player1_id, player2_id=player2_id, winner_id=winner_id, loser_id=loser_id)
+        db.add(game_history)
+        db.flush()
+
+        queryw = db.query(ScoreHistory).filter(ScoreHistory.user_id == winner_id).order_by(ScoreHistory.change_timestamp.desc()).limit(1)
+        resultw=queryw.first()
+        print(resultw)
+
+        queryl = db.query(ScoreHistory).filter(ScoreHistory.user_id == loser_id).order_by(ScoreHistory.change_timestamp.desc()).limit(1)
+        resultl=queryl.first()
+        print(resultl)
+
+        new_score_w, new_score_l = utils.update_scores(resultw.new_score, resultl.new_score)
+
+        score_history_w = ScoreHistory(user_id=winner_id, old_score=resultw.new_score, new_score=new_score_w, game_id=game_history.id)
+        score_history_l = ScoreHistory(user_id=loser_id, old_score=resultl.new_score, new_score=new_score_l, game_id=game_history.id)
+        db.add(score_history_w)
+        db.add(score_history_l)
+
+        db.commit()
+
+        print(game_history)
+        return game_history
+    except Exception as e:
+        db.rollback()
+        raise e
 
 @write_router.post("/score_history/", response_model=ScoreHistoryOut)
 def create_score_history(score_history: ScoreHistoryCreate, db: Session = Depends(get_db)):
